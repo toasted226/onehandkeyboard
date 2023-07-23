@@ -1,0 +1,11 @@
+.textbox {
+    width: 100%;
+    height: 100%;
+    background-color: #2f2f2f;
+    color: white;
+    border: none;
+}
+
+.textbox:focus {
+    border: none;
+}
