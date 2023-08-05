@@ -7,16 +7,20 @@ This application allows you to touch type with one hand, with only one side of t
 If you take the letters your right hand is responsible for and mirror it over those which your left hand is responsible for, you can type with only your left hand and the application will try to 'guess' what you're actually trying to write.
 
 For example, on a Qwerty keyboard layout the left handed letters correspond to the right hand letters:
-A -> ;
-S -> L
-D -> K
-F -> J
+| Original | Mapped |
+|----------|--------|
+| A        | ;      |
+| S        | L      |
+| D        | K      |
+| F        | J      |
 
 On a Dvorak layout:
-A -> S
-O -> N
-E -> T
-U -> H
+| Original | Mapped |
+|----------|--------|
+| A        | S      |
+| O        | N      |
+| E        | T      |
+| U        | H      |
 
 It 'guesses' by looking up a dictionary of words in the new one-handed equivalent, and shows a list of options to choose from.
 
