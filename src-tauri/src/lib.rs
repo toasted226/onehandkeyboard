@@ -21,7 +21,7 @@ pub fn read_words() -> Vec<String> {
                 s.to_string()
             }
         })
-        .filter(|s| s.chars().all(|x| x.is_alphabetic()))
+        //.filter(|s| s.chars().all(|x| x.is_alphabetic()))
         .map(|s| s.to_lowercase().to_string())
         .collect()
 }
@@ -95,6 +95,43 @@ pub fn get_translations(word: &str, map: &HashMap<String, Vec<String>>) -> Vec<S
         Some(word) => word.clone(),
         None => vec![word.to_string()],
     }
+}
+
+
+// Gets the indices of all the characters that are in uppercase
+pub fn get_uppercase_indices(word: &str) -> Vec<usize> {
+    let mut indices: Vec<usize> = Vec::new();
+    let mut current_index: usize = 0;
+
+    for c in word.chars() {
+        if c.is_uppercase() {
+            indices.push(current_index);
+        }
+        current_index += 1;
+    }
+
+    indices
+}
+
+// Change the case to uppercase for every word according to which indices were marked as uppercase from the original word
+pub fn change_words_case(words: &[String], indices: &[usize]) -> Vec<String> {
+    let mut v = Vec::new();
+
+    for word in words {
+        let mut mword = String::new();
+        let mut index = 0;
+        for c in word.chars() {
+            if indices.contains(&index) {
+                mword.push(c.to_ascii_uppercase());
+            } else {
+                mword.push(c);
+            }
+            index += 1;
+        }
+        v.push(mword);
+    }
+
+    v
 }
 
 #[cfg(test)]

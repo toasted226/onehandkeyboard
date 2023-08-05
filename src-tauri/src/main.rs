@@ -24,8 +24,14 @@ fn on_text_change(state: tauri::State<DictionaryState>, text: &str) -> Words {
         index = i;
     }
 
-    let word = &trimmed_text[index..].trim();
-    let translations = onehandkeyboard::get_translations(word, &state.0.lock().unwrap().map); 
+    let original = trimmed_text[index..].trim().to_lowercase();
+    let mut translations = onehandkeyboard::get_translations(&original, &state.0.lock().unwrap().map);
+
+    let word = trimmed_text[index..].trim();
+    let indices = onehandkeyboard::get_uppercase_indices(word);
+    if indices.len() > 0 {
+        translations = onehandkeyboard::change_words_case(&translations, &indices);
+    }
 
     Words { index, translated: translations }
 }
