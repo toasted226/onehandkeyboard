@@ -1,4 +1,4 @@
-# One Handed Keyboard
+# One Hand Keyboard
 
 This application allows you to touch type with one hand, with only one side of the keyboard - meaning you don't have to spread your fingers across the entire keyboard layout.
 
