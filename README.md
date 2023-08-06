@@ -6,7 +6,7 @@ This application allows you to touch type with one hand, with only one side of t
 
 If you take the letters your right hand is responsible for and mirror it over those which your left hand is responsible for, you can type with only your left hand and the application will try to 'guess' what you're actually trying to write.
 
-For example, on a Qwerty keyboard layout the left handed letters correspond to the right hand letters:
+For example, on a Qwerty keyboard layout the left-hand letters correspond to the right-hand letters as follows:
 | Original | Mapped |
 |----------|--------|
 | A        | ;      |
