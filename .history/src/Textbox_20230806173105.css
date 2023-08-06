@@ -19,8 +19,8 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
 
-    background-color: #0f0f0f;
-    padding: 3px;
+    background-color: #3f3f3f;
+    padding: 5px;
     border: #EFE84A solid 1px;
 }
 
@@ -29,10 +29,6 @@
     background-color: #1f1f1f;
     color: white;
     border: none;
-    border-bottom: #0f0f0f solid 1px;
     padding: 4px;
     outline: none;
 }
-
-::selection { background: #EFE84A; color: black; }
-::-moz-selection { background: #EFE84A; color: black; }

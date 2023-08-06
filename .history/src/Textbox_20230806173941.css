@@ -34,5 +34,5 @@
     outline: none;
 }
 
-::selection { background: #EFE84A; color: black; }
+::selection { background: #EFE84A; color: #0f0f0f; }
 ::-moz-selection { background: #EFE84A; color: black; }
