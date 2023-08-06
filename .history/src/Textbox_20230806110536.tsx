@@ -27,7 +27,16 @@ function Textbox() {
                 if (words.index === -1) {
                     setWords(await invoke("on_text_change", { text: textAreaValue }));
                 } else {
-                    replaceWord(focusedIndex, false);
+                    let fi = words.index;
+                    if (words.index != 0)
+                        fi += 1;
+                        
+                    let value = textAreaValue.slice(0, fi) + words.translated[focusedIndex];
+                    setTextAreaValue(value);
+
+                    setWords({index: -1, translated: [""]});
+                    textAreaRef.current?.focus();
+                    setFocusedIndex(0);
                 }
             }
         }

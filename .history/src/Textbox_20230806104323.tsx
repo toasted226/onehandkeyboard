@@ -27,7 +27,16 @@ function Textbox() {
                 if (words.index === -1) {
                     setWords(await invoke("on_text_change", { text: textAreaValue }));
                 } else {
-                    replaceWord(focusedIndex, false);
+                    let fi = words.index;
+                    if (words.index != 0)
+                        fi += 1;
+                        
+                    let value = textAreaValue.slice(0, fi) + words.translated[focusedIndex];
+                    setTextAreaValue(value);
+
+                    setWords({index: -1, translated: [""]});
+                    textAreaRef.current?.focus();
+                    setFocusedIndex(0);
                 }
             }
         }
@@ -38,16 +47,27 @@ function Textbox() {
 
         if (evt.key === "Tab") {
             if (!evt.shiftKey) {
-                nextIndex();
+                const nextIndex = focusedIndex + 1;
+                setFocusedIndex(nextIndex >= words.translated.length ? 0 : nextIndex);
                 dropdownRef.current?.focus();
             } else {
-                callBackspace();
+                setTextAreaValue(textAreaValue.slice(0, -1));
+                setWords({index: -1, translated: [""]});
             }
         }
     };
 
     const handleButtonClick = (index: number) => {
-        replaceWord(index, true);
+        setFocusedIndex(index);
+
+        let fi = words.index;
+        if (words.index != 0)
+            fi += 1;
+            
+        let value = textAreaValue.slice(0, fi) + words.translated[index] + " ";
+        setTextAreaValue(value);
+
+        setWords({index: -1, translated: [""]});
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -57,44 +77,27 @@ function Textbox() {
             case "Tab":
                 if (!event.shiftKey) {
                     event.currentTarget.focus();
-                    nextIndex();
+                    const nextIndex = focusedIndex + 1;
+                    setFocusedIndex(nextIndex >= words.translated.length ? 0 : nextIndex);
                 } else {
-                    callBackspace();
+                    setTextAreaValue(textAreaValue.slice(0, -1));
+                    setWords({index: -1, translated: [""]});
                 }
                 break;
             case " ":
                 event.currentTarget.focus();
-                replaceWord(focusedIndex, true);
+                let fi = words.index;
+                if (words.index != 0)
+                    fi += 1;
+                    
+                let value = textAreaValue.slice(0, fi) + words.translated[focusedIndex] + " ";
+                setTextAreaValue(value);
+
+                setWords({index: -1, translated: [""]});
+                textAreaRef.current?.focus();
+                setFocusedIndex(0);
                 break;
         }
-    };
-
-    const callBackspace = () => {
-        setTextAreaValue(textAreaValue.slice(0, -1));
-        setWords({index: -1, translated: [""]});
-    };
-
-    const nextIndex = () => {
-        const nextIndex = focusedIndex + 1;
-        setFocusedIndex(nextIndex >= words.translated.length ? 0 : nextIndex);
-    };
-
-    const replaceWord = (index: number, withSpace: boolean) => {
-        let fi = words.index;
-        if (words.index != 0)
-            fi += 1;
-        
-        let value = "";
-        
-        if (withSpace)
-            value = textAreaValue.slice(0, fi) + words.translated[index] + " ";
-        else
-            value = textAreaValue.slice(0, fi) + words.translated[index];
-        setTextAreaValue(value);
-
-        setWords({index: -1, translated: [""]});
-        textAreaRef.current?.focus();
-        setFocusedIndex(0);
     };
 
     return (

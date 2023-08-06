@@ -27,7 +27,16 @@ function Textbox() {
                 if (words.index === -1) {
                     setWords(await invoke("on_text_change", { text: textAreaValue }));
                 } else {
-                    replaceWord(focusedIndex, false);
+                    let fi = words.index;
+                    if (words.index != 0)
+                        fi += 1;
+                        
+                    let value = textAreaValue.slice(0, fi) + words.translated[focusedIndex];
+                    setTextAreaValue(value);
+
+                    setWords({index: -1, translated: [""]});
+                    textAreaRef.current?.focus();
+                    setFocusedIndex(0);
                 }
             }
         }
@@ -47,7 +56,16 @@ function Textbox() {
     };
 
     const handleButtonClick = (index: number) => {
-        replaceWord(index, true);
+        let fi = words.index;
+        if (words.index != 0)
+            fi += 1;
+            
+        let value = textAreaValue.slice(0, fi) + words.translated[index] + " ";
+        setTextAreaValue(value);
+
+        setWords({index: -1, translated: [""]});
+        textAreaRef.current?.focus();
+        setFocusedIndex(0);
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -64,7 +82,16 @@ function Textbox() {
                 break;
             case " ":
                 event.currentTarget.focus();
-                replaceWord(focusedIndex, true);
+                let fi = words.index;
+                if (words.index != 0)
+                    fi += 1;
+                    
+                let value = textAreaValue.slice(0, fi) + words.translated[focusedIndex] + " ";
+                setTextAreaValue(value);
+
+                setWords({index: -1, translated: [""]});
+                textAreaRef.current?.focus();
+                setFocusedIndex(0);
                 break;
         }
     };
@@ -84,12 +111,8 @@ function Textbox() {
         if (words.index != 0)
             fi += 1;
         
-        let value = "";
-        
         if (withSpace)
-            value = textAreaValue.slice(0, fi) + words.translated[index] + " ";
-        else
-            value = textAreaValue.slice(0, fi) + words.translated[index];
+            let value = textAreaValue.slice(0, fi) + words.translated[index] + " ";
         setTextAreaValue(value);
 
         setWords({index: -1, translated: [""]});

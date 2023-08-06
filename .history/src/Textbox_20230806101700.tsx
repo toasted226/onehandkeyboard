@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import useAutosizeTextArea from "./useAutosizeTextArea";
 import "./Textbox.css";
 import { invoke } from "@tauri-apps/api";
@@ -12,6 +12,12 @@ function Textbox() {
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useAutosizeTextArea(textAreaRef.current, textAreaValue);
+
+    useEffect(() => {
+        if (words.translated.length == 1) {
+            
+        }
+    });
 
     const handleTextAreaChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
         const val = evt.target?.value;
@@ -27,7 +33,16 @@ function Textbox() {
                 if (words.index === -1) {
                     setWords(await invoke("on_text_change", { text: textAreaValue }));
                 } else {
-                    replaceWord(focusedIndex, false);
+                    let fi = words.index;
+                    if (words.index != 0)
+                        fi += 1;
+                        
+                    let value = textAreaValue.slice(0, fi) + words.translated[focusedIndex];
+                    setTextAreaValue(value);
+
+                    setWords({index: -1, translated: [""]});
+                    textAreaRef.current?.focus();
+                    setFocusedIndex(0);
                 }
             }
         }
@@ -37,17 +52,23 @@ function Textbox() {
         }
 
         if (evt.key === "Tab") {
-            if (!evt.shiftKey) {
-                nextIndex();
-                dropdownRef.current?.focus();
-            } else {
-                callBackspace();
-            }
+            const nextIndex = focusedIndex + 1;
+            setFocusedIndex(nextIndex >= words.translated.length ? 0 : nextIndex);
+            dropdownRef.current?.focus();
         }
     };
 
     const handleButtonClick = (index: number) => {
-        replaceWord(index, true);
+        setFocusedIndex(index);
+
+        let fi = words.index;
+        if (words.index != 0)
+            fi += 1;
+            
+        let value = textAreaValue.slice(0, fi) + words.translated[index] + " ";
+        setTextAreaValue(value);
+
+        setWords({index: -1, translated: [""]});
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -55,46 +76,24 @@ function Textbox() {
         event.preventDefault();
         switch (event.key) {
             case "Tab":
-                if (!event.shiftKey) {
-                    event.currentTarget.focus();
-                    nextIndex();
-                } else {
-                    callBackspace();
-                }
+                event.currentTarget.focus();
+                const nextIndex = focusedIndex + 1;
+                setFocusedIndex(nextIndex >= words.translated.length ? 0 : nextIndex);
                 break;
             case " ":
                 event.currentTarget.focus();
-                replaceWord(focusedIndex, true);
+                let fi = words.index;
+                if (words.index != 0)
+                    fi += 1;
+                    
+                let value = textAreaValue.slice(0, fi) + words.translated[focusedIndex] + " ";
+                setTextAreaValue(value);
+
+                setWords({index: -1, translated: [""]});
+                textAreaRef.current?.focus();
+                setFocusedIndex(0);
                 break;
         }
-    };
-
-    const callBackspace = () => {
-        setTextAreaValue(textAreaValue.slice(0, -1));
-        setWords({index: -1, translated: [""]});
-    };
-
-    const nextIndex = () => {
-        const nextIndex = focusedIndex + 1;
-        setFocusedIndex(nextIndex >= words.translated.length ? 0 : nextIndex);
-    };
-
-    const replaceWord = (index: number, withSpace: boolean) => {
-        let fi = words.index;
-        if (words.index != 0)
-            fi += 1;
-        
-        let value = "";
-        
-        if (withSpace)
-            value = textAreaValue.slice(0, fi) + words.translated[index] + " ";
-        else
-            value = textAreaValue.slice(0, fi) + words.translated[index];
-        setTextAreaValue(value);
-
-        setWords({index: -1, translated: [""]});
-        textAreaRef.current?.focus();
-        setFocusedIndex(0);
     };
 
     return (
