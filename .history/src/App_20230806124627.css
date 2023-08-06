@@ -1,0 +1,13 @@
+.loading {
+    background-color: #1f1f1f;
+    padding: 2px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.loading > p {
+    padding: 2px;
+}
