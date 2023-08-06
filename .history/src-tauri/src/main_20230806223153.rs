@@ -11,7 +11,6 @@ pub struct ConfigState(Mutex<Config>);
 #[derive(Default)]
 pub struct Config {
     map: Option<HashMap<String, Vec<String>>>,
-    layout: KeyboardLayout,
 }
 
 #[derive(serde::Serialize)]
@@ -76,7 +75,6 @@ fn new_dictionary(state: tauri::State<ConfigState>) {
     // state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout_state.0.lock().unwrap().layout));
 
     let (sender, receiver) = mpsc::channel();
-    let layout = state.0.lock().unwrap().layout.clone();
 
     thread::spawn(move || {
         let words = onehandkeyboard::read_words();

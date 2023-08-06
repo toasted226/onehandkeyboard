@@ -11,7 +11,6 @@ pub struct ConfigState(Mutex<Config>);
 #[derive(Default)]
 pub struct Config {
     map: Option<HashMap<String, Vec<String>>>,
-    layout: KeyboardLayout,
 }
 
 #[derive(serde::Serialize)]
@@ -24,7 +23,7 @@ struct Words {
 // Takes in the text in the textarea, uses the last word typed and looks it up in the dictionary.
 // If matches are found, the words are sent back as a Vec<String> / string[] along with the index of where the word begins.
 #[tauri::command]
-fn on_text_change(state: tauri::State<ConfigState>, text: &str) -> Words {
+fn on_text_change(state: tauri::State<DictionaryState>, text: &str) -> Words {
     let mut index = 0;
     let trimmed_text = text.trim();
 
@@ -54,13 +53,13 @@ fn on_text_change(state: tauri::State<ConfigState>, text: &str) -> Words {
 }
 
 #[tauri::command]
-fn letter_to_symbol(state: tauri::State<ConfigState>, letter: char) -> Option<char> {
+fn letter_to_symbol(state: tauri::State<SelectedLayoutState>, letter: char) -> Option<char> {
     onehandkeyboard::get_symbol(&letter, &state.0.lock().unwrap().layout)
 }
 
 fn main() {
     tauri::Builder::default()
-        .manage(ConfigState(Default::default()))
+        .manage(DictionaryState(Default::default()))
         .invoke_handler(tauri::generate_handler![new_dictionary, on_text_change, letter_to_symbol, layout_init])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -71,12 +70,12 @@ fn main() {
 // Expensive operation, causes 1-2 second freeze on startup
 // TODO: Run async?
 #[tauri::command]
-fn new_dictionary(state: tauri::State<ConfigState>) {
+fn new_dictionary(state: tauri::State<DictionaryState>, layout_state: tauri::State<SelectedLayoutState>) {
     // let words = onehandkeyboard::read_words();
     // state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout_state.0.lock().unwrap().layout));
 
     let (sender, receiver) = mpsc::channel();
-    let layout = state.0.lock().unwrap().layout.clone();
+    let layout = layout_state.0.lock().unwrap().layout.clone();
 
     thread::spawn(move || {
         let words = onehandkeyboard::read_words();
@@ -92,6 +91,6 @@ fn new_dictionary(state: tauri::State<ConfigState>) {
 }
 
 #[tauri::command]
-fn layout_init(state: tauri::State<ConfigState>) {
+fn layout_init(state: tauri::State<SelectedLayoutState>) {
     state.0.lock().unwrap().layout = KeyboardLayout::Dvorak;
 }

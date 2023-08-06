@@ -1,7 +1,7 @@
 use std::fs;
 use std::collections::HashMap;
 
-#[derive(PartialEq, Default, Clone)]
+#[derive(PartialEq, Default)]
 pub enum KeyboardLayout {
     Dvorak,
     #[default]Qwerty,
@@ -28,7 +28,7 @@ pub fn read_words() -> Vec<String> {
 
 // Converts char to its onehand equivalent
 pub fn to_onehand_char(c: &char, layout: &KeyboardLayout) -> char {
-    if *layout == KeyboardLayout::Dvorak {
+    if layout == KeyboardLayout::Dvorak {
         match c {
             'h' => 'u',
             't' => 'e',

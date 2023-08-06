@@ -5,13 +5,12 @@ use std::sync::{Mutex, mpsc};
 use std::collections::HashMap;
 use std::thread;
 
-use onehandkeyboard::KeyboardLayout;
+use onehandkeyboard::SelectedLayoutState;
 
-pub struct ConfigState(Mutex<Config>);
+pub struct DictionaryState(Mutex<Dictionary>);
 #[derive(Default)]
-pub struct Config {
+pub struct Dictionary {
     map: Option<HashMap<String, Vec<String>>>,
-    layout: KeyboardLayout,
 }
 
 #[derive(serde::Serialize)]
@@ -24,7 +23,7 @@ struct Words {
 // Takes in the text in the textarea, uses the last word typed and looks it up in the dictionary.
 // If matches are found, the words are sent back as a Vec<String> / string[] along with the index of where the word begins.
 #[tauri::command]
-fn on_text_change(state: tauri::State<ConfigState>, text: &str) -> Words {
+fn on_text_change(state: tauri::State<DictionaryState>, text: &str) -> Words {
     let mut index = 0;
     let trimmed_text = text.trim();
 
@@ -54,14 +53,14 @@ fn on_text_change(state: tauri::State<ConfigState>, text: &str) -> Words {
 }
 
 #[tauri::command]
-fn letter_to_symbol(state: tauri::State<ConfigState>, letter: char) -> Option<char> {
-    onehandkeyboard::get_symbol(&letter, &state.0.lock().unwrap().layout)
+fn letter_to_symbol(letter: char) -> Option<char> {
+    onehandkeyboard::get_symbol(&letter)
 }
 
 fn main() {
     tauri::Builder::default()
-        .manage(ConfigState(Default::default()))
-        .invoke_handler(tauri::generate_handler![new_dictionary, on_text_change, letter_to_symbol, layout_init])
+        .manage(DictionaryState(Default::default()))
+        .invoke_handler(tauri::generate_handler![new_dictionary, on_text_change, letter_to_symbol])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -71,16 +70,15 @@ fn main() {
 // Expensive operation, causes 1-2 second freeze on startup
 // TODO: Run async?
 #[tauri::command]
-fn new_dictionary(state: tauri::State<ConfigState>) {
+fn new_dictionary(state: tauri::State<DictionaryState>) {
     // let words = onehandkeyboard::read_words();
-    // state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout_state.0.lock().unwrap().layout));
+    // state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words));
 
     let (sender, receiver) = mpsc::channel();
-    let layout = state.0.lock().unwrap().layout.clone();
 
     thread::spawn(move || {
         let words = onehandkeyboard::read_words();
-        let hashmap = onehandkeyboard::create_hashmap(&words, &layout);
+        let hashmap = onehandkeyboard::create_hashmap(&words);
 
         // Send the created hashmap to the main thread
         sender.send(hashmap).unwrap();
@@ -92,6 +90,6 @@ fn new_dictionary(state: tauri::State<ConfigState>) {
 }
 
 #[tauri::command]
-fn layout_init(state: tauri::State<ConfigState>) {
-    state.0.lock().unwrap().layout = KeyboardLayout::Dvorak;
+fn layout_init(state: tauri::State<SelectedLayoutState>) {
+    
 }

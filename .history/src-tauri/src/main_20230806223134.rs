@@ -11,7 +11,6 @@ pub struct ConfigState(Mutex<Config>);
 #[derive(Default)]
 pub struct Config {
     map: Option<HashMap<String, Vec<String>>>,
-    layout: KeyboardLayout,
 }
 
 #[derive(serde::Serialize)]
@@ -54,13 +53,13 @@ fn on_text_change(state: tauri::State<ConfigState>, text: &str) -> Words {
 }
 
 #[tauri::command]
-fn letter_to_symbol(state: tauri::State<ConfigState>, letter: char) -> Option<char> {
+fn letter_to_symbol(state: tauri::State<SelectedLayoutState>, letter: char) -> Option<char> {
     onehandkeyboard::get_symbol(&letter, &state.0.lock().unwrap().layout)
 }
 
 fn main() {
     tauri::Builder::default()
-        .manage(ConfigState(Default::default()))
+        .manage(DictionaryState(Default::default()))
         .invoke_handler(tauri::generate_handler![new_dictionary, on_text_change, letter_to_symbol, layout_init])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -76,7 +75,6 @@ fn new_dictionary(state: tauri::State<ConfigState>) {
     // state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout_state.0.lock().unwrap().layout));
 
     let (sender, receiver) = mpsc::channel();
-    let layout = state.0.lock().unwrap().layout.clone();
 
     thread::spawn(move || {
         let words = onehandkeyboard::read_words();

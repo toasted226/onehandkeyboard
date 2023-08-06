@@ -76,11 +76,10 @@ fn new_dictionary(state: tauri::State<ConfigState>) {
     // state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout_state.0.lock().unwrap().layout));
 
     let (sender, receiver) = mpsc::channel();
-    let layout = state.0.lock().unwrap().layout.clone();
 
     thread::spawn(move || {
         let words = onehandkeyboard::read_words();
-        let hashmap = onehandkeyboard::create_hashmap(&words, &layout);
+        let hashmap = onehandkeyboard::create_hashmap(&words, &state.0.lock().unwrap().layout);
 
         // Send the created hashmap to the main thread
         sender.send(hashmap).unwrap();

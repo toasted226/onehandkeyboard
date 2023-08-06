@@ -80,7 +80,7 @@ fn new_dictionary(state: tauri::State<ConfigState>) {
 
     thread::spawn(move || {
         let words = onehandkeyboard::read_words();
-        let hashmap = onehandkeyboard::create_hashmap(&words, &layout);
+        let hashmap = onehandkeyboard::create_hashmap(&words, &state.0.lock().unwrap().layout);
 
         // Send the created hashmap to the main thread
         sender.send(hashmap).unwrap();

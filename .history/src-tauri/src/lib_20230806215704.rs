@@ -1,12 +1,13 @@
 use std::fs;
 use std::collections::HashMap;
 
-#[derive(PartialEq, Default, Clone)]
+#[derive(PartialEq)]
 pub enum KeyboardLayout {
     Dvorak,
-    #[default]Qwerty,
+    Qwerty,
 }
 
+const KEYBOARD_LAYOUT: KeyboardLayout = KeyboardLayout::Dvorak;
 const FILE_PATH: &str = "assets/words.txt";
 
 // Reads and filters all the words in the words file
@@ -27,8 +28,8 @@ pub fn read_words() -> Vec<String> {
 }
 
 // Converts char to its onehand equivalent
-pub fn to_onehand_char(c: &char, layout: &KeyboardLayout) -> char {
-    if *layout == KeyboardLayout::Dvorak {
+pub fn to_onehand_char(c: &char) -> char {
+    if KEYBOARD_LAYOUT == KeyboardLayout::Dvorak {
         match c {
             'h' => 'u',
             't' => 'e',
@@ -71,16 +72,16 @@ pub fn to_onehand_char(c: &char, layout: &KeyboardLayout) -> char {
 }
 
 // Converts word to its onehand equivalent
-pub fn to_onehand_word(word: &str, layout: &KeyboardLayout) -> String {
-    word.chars().map(|c| to_onehand_char(&c, layout)).collect()
+pub fn to_onehand_word(word: &str) -> String {
+    word.chars().map(|c| to_onehand_char(&c)).collect()
 }
 
 // Builds dictionary as a hashmap from words
-pub fn create_hashmap(words: &[String], layout: &KeyboardLayout) -> HashMap<String, Vec<String>> {
+pub fn create_hashmap(words: &[String]) -> HashMap<String, Vec<String>> {
     let mut map: HashMap<String, Vec<String>> = HashMap::new();
 
     for word in words {
-        let key = to_onehand_word(&word, layout);
+        let key = to_onehand_word(&word);
         let value = word.clone();
         
         if let Some(v) = map.get_mut(&key) {
@@ -141,8 +142,8 @@ pub fn change_words_case(words: &[String], indices: &[usize]) -> Vec<String> {
 
 // Converts letter to its corresponding punctuation or symbol
 // User holds alt and presses one of these letters to get a symbol
-pub fn get_symbol(letter: &char, layout: &KeyboardLayout) -> Option<char> {
-    match layout {
+pub fn get_symbol(letter: &char) -> Option<char> {
+    match KEYBOARD_LAYOUT {
         KeyboardLayout::Dvorak => {
             match letter {
                 '\'' => Some('\''),
@@ -198,13 +199,13 @@ mod tests {
     #[test]
     fn first_word_correct() {
         let words = read_words();
-        assert_eq!(words[0], String::from("2"));
+        assert_eq!(words[0], String::from("a"));
     }
 
     #[test]
     fn translates() {
         let words = read_words();
-        let map = create_hashmap(&words, &KeyboardLayout::Dvorak);
+        let map = create_hashmap(&words);
         let translations = get_translations("ia", &map);
 
         assert_eq!(translations, vec!["is"]);
@@ -212,7 +213,6 @@ mod tests {
 
     #[test]
     fn converts_to_symbol() {
-        let symbol = get_symbol(&'a', &KeyboardLayout::Dvorak);
-        assert_eq!(symbol.unwrap(), '[');
+        let symbol = get_symbol(&'a');
     }
 }

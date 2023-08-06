@@ -1,7 +1,7 @@
 use std::fs;
 use std::collections::HashMap;
 
-#[derive(PartialEq, Default, Clone)]
+#[derive(PartialEq, Default)]
 pub enum KeyboardLayout {
     Dvorak,
     #[default]Qwerty,
