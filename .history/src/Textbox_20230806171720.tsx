@@ -32,17 +32,15 @@ function Textbox() {
             }
         } else if (evt.key === "Backspace") {
             setWords({index: -1, translated: [""]});
-        } else if (evt.key === "Tab") {
+        }
+
+        if (evt.key === "Tab") {
             if (!evt.shiftKey) {
                 nextIndex();
                 dropdownRef.current?.focus();
             } else {
                 callBackspace();
             }
-        }
-        
-        if (evt.altKey && /^[a-zA-Z',.]$/.test(evt.key)) {
-            // TODO: Call rust code that will convert the character to corresponding punctuation
         }
     };
 

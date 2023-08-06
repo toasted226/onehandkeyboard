@@ -39,10 +39,8 @@ function Textbox() {
             } else {
                 callBackspace();
             }
-        }
-        
-        if (evt.altKey && /^[a-zA-Z',.]$/.test(evt.key)) {
-            // TODO: Call rust code that will convert the character to corresponding punctuation
+        } else if (evt.altKey && /^[a-zA-Z]$/.test(evt.key)) {
+            console.log("alt key is being held while pressing ", textAreaValue[length - 1]);
         }
     };
 

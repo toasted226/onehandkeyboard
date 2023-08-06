@@ -30,19 +30,19 @@ function Textbox() {
                     replaceWord(focusedIndex, false);
                 }
             }
-        } else if (evt.key === "Backspace") {
+        }
+
+        if (evt.key === "Backspace") {
             setWords({index: -1, translated: [""]});
-        } else if (evt.key === "Tab") {
+        }
+
+        if (evt.key === "Tab") {
             if (!evt.shiftKey) {
                 nextIndex();
                 dropdownRef.current?.focus();
             } else {
                 callBackspace();
             }
-        }
-        
-        if (evt.altKey && /^[a-zA-Z',.]$/.test(evt.key)) {
-            // TODO: Call rust code that will convert the character to corresponding punctuation
         }
     };
 
@@ -117,8 +117,7 @@ function Textbox() {
                     <button
                         key={index}
                         onClick={() => handleButtonClick(index)}
-                        style={{background: focusedIndex === index ? "#EFE84A" : "#1f1f1f",
-                                color: focusedIndex === index ? "black" : "white"}}
+                        style={{background: focusedIndex === index ? "#EFE84A" : "#1f1f1f"}}
                     >
                         {word}
                     </button>

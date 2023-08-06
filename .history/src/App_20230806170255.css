@@ -11,3 +11,20 @@
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
 }
+
+.loading > img {
+    width: 20px;
+    height: auto;
+    
+    animation-name: spin;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0);
+    }
+
+    360% {
+        transform: rotate(360deg);
+    }
+}

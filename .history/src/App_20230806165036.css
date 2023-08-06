@@ -4,10 +4,19 @@
     width: 200px;
     text-align: center;
     border-radius: 5px;
-    border: #EFE84A solid 1px;
+    border: rgb(244, 238, 86) solid 1px;
 
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+}
+
+.loading > img {
+    width: 20px;
+    height: auto;
+}
+
+.loading > img > path {
+    stroke: rgb(244, 238, 86);
 }

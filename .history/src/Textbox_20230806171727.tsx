@@ -40,10 +40,6 @@ function Textbox() {
                 callBackspace();
             }
         }
-        
-        if (evt.altKey && /^[a-zA-Z',.]$/.test(evt.key)) {
-            // TODO: Call rust code that will convert the character to corresponding punctuation
-        }
     };
 
     const handleButtonClick = (index: number) => {

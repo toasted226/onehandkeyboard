@@ -1,0 +1,32 @@
+.loading {
+    background-color: #1f1f1f;
+    padding: 2px;
+    width: 200px;
+    text-align: center;
+    border-radius: 5px;
+    border: #EFE84A solid 1px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.loading > img {
+    width: 20px;
+    height: auto;
+    
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0);
+    }
+
+    360% {
+        transform: rotate(360deg);
+    }
+}
