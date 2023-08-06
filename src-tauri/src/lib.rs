@@ -140,6 +140,49 @@ pub fn change_words_case(words: &[String], indices: &[usize]) -> Vec<String> {
     v
 }
 
+pub fn get_symbol(letter: &char) -> Option<char> {
+    match KEYBOARD_LAYOUT {
+        KeyboardLayout::Dvorak => {
+            match letter {
+                '\'' => Some('\''),
+                ',' => Some(','),
+                '.' => Some('.'),
+                'p' => Some('?'),
+                'y' => Some('/'),
+                'a' => Some('['),
+                'o' => Some(']'),
+                'e' => Some('('),
+                'u' => Some(')'),
+                'i' => Some('\\'),
+                ';' => Some('-'),
+                'q' => Some('+'),
+                'j' => Some('*'),
+                'k' => Some('='),
+                _ => None
+            }
+        },
+        KeyboardLayout::Qwerty => {
+            match letter {
+                'q' => Some('\''),
+                'w' => Some(','),
+                'e' => Some('.'),
+                'r' => Some('?'),
+                't' => Some('/'),
+                'a' => Some('['),
+                's' => Some(']'),
+                'd' => Some('('),
+                'f' => Some(')'),
+                'g' => Some('\\'),
+                'z' => Some('-'),
+                'x' => Some('+'),
+                'c' => Some('*'),
+                'v' => Some('='),
+                _ => None
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

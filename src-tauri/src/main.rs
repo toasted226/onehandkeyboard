@@ -50,10 +50,15 @@ fn on_text_change(state: tauri::State<DictionaryState>, text: &str) -> Words {
     Words { index, translated: translations }
 }
 
+#[tauri::command]
+fn letter_to_symbol(letter: char) -> Option<char> {
+    onehandkeyboard::get_symbol(&letter)
+}
+
 fn main() {
     tauri::Builder::default()
         .manage(DictionaryState(Default::default()))
-        .invoke_handler(tauri::generate_handler![new_dictionary, on_text_change])
+        .invoke_handler(tauri::generate_handler![new_dictionary, on_text_change, letter_to_symbol])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

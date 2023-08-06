@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import useAutosizeTextArea from "./useAutosizeTextArea";
 import "./Textbox.css";
 import { invoke } from "@tauri-apps/api";
@@ -25,7 +25,19 @@ function Textbox() {
         if (evt.key === " ") { 
             if (val.length > 1) {
                 if (words.index === -1) {
-                    setWords(await invoke("on_text_change", { text: textAreaValue }));
+                    const new_words: {index: number, translated: string[] } = await invoke("on_text_change", { text: textAreaValue }); 
+                    setWords(new_words);
+
+                    if (new_words.translated.length === 1) {
+                        let fi = new_words.index;
+                        if (new_words.index !== 0)
+                            fi += 1;
+
+                        setTextAreaValue(textAreaValue.slice(0, fi) + new_words.translated[focusedIndex] + " ");
+
+                        setWords({index: -1, translated: [""]});
+                        setFocusedIndex(0);
+                    }
                 } else {
                     replaceWord(focusedIndex, false);
                 }
@@ -41,8 +53,16 @@ function Textbox() {
             }
         }
         
-        if (evt.altKey && /^[a-zA-Z',.]$/.test(evt.key)) {
+        if (evt.altKey && /^[a-zA-Z',.;]$/.test(evt.key)) {
             // TODO: Call rust code that will convert the character to corresponding punctuation
+            const symbol = await invoke("letter_to_symbol", { letter: evt.key });
+            if (symbol !== null) {
+                let value = textAreaValue;
+                if (textAreaValue[textAreaValue.length - 1] === " ") {
+                    value = textAreaValue.slice(0, -1);
+                }
+                setTextAreaValue(value + symbol);
+            }
         }
     };
 
