@@ -1,0 +1,18 @@
+.loading {
+    background-color: #1f1f1f;
+    padding: 2px;
+    width: 200px;
+    text-align: center;
+    border-radius: 5px;
+    border: #EFE84A solid 1px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.first-setup {
+    width: 90%;
+    height: 90%;
+}
