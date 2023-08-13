@@ -25,7 +25,7 @@ On a Dvorak layout:
 It 'guesses' by looking up a dictionary of words in the new one-handed equivalent, and shows a list of options to choose from.
 
 ### Roadmap
-- Allow the user to change keyboard layout (automatic?)
+- Allow the user to change keyboard layout ✔
 - Allow the user to add custom entries to the dictionary
 - Keep track of commonly selected words to bump them to the top of the list
 - Implement right-handed-typing mode
