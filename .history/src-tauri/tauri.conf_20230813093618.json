@@ -23,15 +23,15 @@
       "fs": {
         "all": false,
         "copyFile": false,
-        "createDir": true,
-        "exists": true,
-        "readDir": true,
-        "readFile": true,
+        "createDir": false,
+        "exists": false,
+        "readDir": false,
+        "readFile": false,
         "removeDir": false,
         "removeFile": false,
         "renameFile": false,
         "scope": [],
-        "writeFile": true
+        "writeFile": false
       }
     },
     "bundle": {

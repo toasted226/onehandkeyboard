@@ -150,7 +150,6 @@ async fn set_layout(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigState
     };
 }
 
-// Returns true if this is the first time the application has been launched (there is no config.json)
 #[tauri::command]
 async fn first_time_startup(app: tauri::AppHandle<>) -> Result<bool, String> {
     let mut filepath = app.path_resolver().app_config_dir().unwrap();

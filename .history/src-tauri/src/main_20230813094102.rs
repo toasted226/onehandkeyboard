@@ -90,7 +90,10 @@ async fn new_dictionary(state: tauri::State<'_, ConfigState>) -> Result<(), Stri
     Ok(())
 }
 
-// Reads config.json stored in app config dir and sets up config struct state
+// Sets the keyboard layout
+// TODO: Identify the keyboard layout used
+// ^ If this is done it would be platform-specific and quite painful (e.g. winapi)
+// For now, ask the user which layout they would like to use
 #[tauri::command]
 async fn config_setup(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigState>) -> Result<(), String> {
     let mut filepath = app.path_resolver().app_config_dir().unwrap();
@@ -111,7 +114,6 @@ async fn config_setup(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigSta
     Ok(())
 }
 
-// Takes in a layout id and configures the keyboard layout used, writes it to config.json stored in app config dir
 #[tauri::command]
 async fn set_layout(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigState>, layout_id: i32) -> Result<(), String> {
     let layout = match layout_id {
@@ -150,7 +152,6 @@ async fn set_layout(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigState
     };
 }
 
-// Returns true if this is the first time the application has been launched (there is no config.json)
 #[tauri::command]
 async fn first_time_startup(app: tauri::AppHandle<>) -> Result<bool, String> {
     let mut filepath = app.path_resolver().app_config_dir().unwrap();
