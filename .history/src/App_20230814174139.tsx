@@ -18,7 +18,9 @@ function App() {
         let progress = invoke("new_dictionary");
         progress.then(() => {
           setLoaded(true);
-        }).catch((e) => setError("ERROR: " + e as string));
+        }).catch((s) => {
+          setError(s as string);
+        });
       });
     });
   }

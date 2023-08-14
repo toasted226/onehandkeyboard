@@ -8,11 +8,11 @@ pub enum KeyboardLayout {
     #[default]Qwerty,
 }
 
-const FILE_PATH: &str = "resources/words.txt";
+const FILE_PATH: &str = "assets/words.txt";
 
 // Reads and filters all the words in the words file
 pub fn read_words() -> Result<Vec<String>, std::io::Error> {
-    let v = fs::read_to_string(FILE_PATH)?
+    fs::read_to_string(FILE_PATH)?
         .lines()
         .map(|s| {
             if s.chars().next().unwrap().is_uppercase() {
@@ -23,9 +23,7 @@ pub fn read_words() -> Result<Vec<String>, std::io::Error> {
         })
         //.filter(|s| s.chars().all(|x| x.is_alphabetic()))
         .map(|s| s.to_lowercase().to_string())
-        .collect();
-
-    Ok(v)
+        .collect()
 }
 
 // Converts char to its onehand equivalent
@@ -193,20 +191,20 @@ mod tests {
 
     #[test]
     fn reads_words() {
-        let words = read_words().unwrap();
+        let words = read_words();
 
         assert!(words.len() > 0);
     }
 
     #[test]
     fn first_word_correct() {
-        let words = read_words().unwrap();
+        let words = read_words();
         assert_eq!(words[0], String::from("2"));
     }
 
     #[test]
     fn translates() {
-        let words = read_words().unwrap();
+        let words = read_words();
         let map = create_hashmap(&words, &KeyboardLayout::Dvorak);
         let translations = get_translations("ia", &map);
 

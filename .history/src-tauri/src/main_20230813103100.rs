@@ -77,16 +77,14 @@ fn main() {
 }
 
 // Creates the dictionary by reading the words file
+// Expensive operation, causes 1-2 second freeze on startup
 #[tauri::command]
 async fn new_dictionary(state: tauri::State<'_, ConfigState>) -> Result<(), String> {
     if !state.0.lock().unwrap().setup {
-        if let Ok(words) = onehandkeyboard::read_words() {
-            let layout = state.0.lock().unwrap().layout.clone();
-            state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout));
-            state.0.lock().unwrap().setup = true;
-        } else {
-            return Err(String::from("Failed to read words"));
-        }
+        let words = onehandkeyboard::read_words();
+        let layout = state.0.lock().unwrap().layout.clone();
+        state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout));
+        state.0.lock().unwrap().setup = true;
     }
     Ok(())
 }
@@ -94,7 +92,7 @@ async fn new_dictionary(state: tauri::State<'_, ConfigState>) -> Result<(), Stri
 // Reads config.json stored in app config dir and sets up config struct state
 #[tauri::command]
 async fn config_setup(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigState>) -> Result<(), String> {
-    let mut filepath = app.path_resolver().app_config_dir().expect("Could not get config directory");
+    let mut filepath = app.path_resolver().app_config_dir().unwrap();
     let path = std::path::Path::new("config.json");
     filepath.push(path);
 
@@ -138,7 +136,7 @@ async fn set_layout(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigState
 
     match json {
         Ok(s) => {
-            match fs::create_dir(dir) {
+            match fs::create_dir_all(dir) {
                 Err(e) => return Err(String::from("Error: ".to_owned() + &e.to_string())),
                 Ok(_) => ()
             }

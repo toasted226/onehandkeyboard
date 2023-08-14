@@ -8,7 +8,7 @@ pub enum KeyboardLayout {
     #[default]Qwerty,
 }
 
-const FILE_PATH: &str = "resources/words.txt";
+const FILE_PATH: &str = "assets/words.txt";
 
 // Reads and filters all the words in the words file
 pub fn read_words() -> Result<Vec<String>, std::io::Error> {
@@ -193,20 +193,20 @@ mod tests {
 
     #[test]
     fn reads_words() {
-        let words = read_words().unwrap();
+        let words = read_words();
 
         assert!(words.len() > 0);
     }
 
     #[test]
     fn first_word_correct() {
-        let words = read_words().unwrap();
+        let words = read_words();
         assert_eq!(words[0], String::from("2"));
     }
 
     #[test]
     fn translates() {
-        let words = read_words().unwrap();
+        let words = read_words();
         let map = create_hashmap(&words, &KeyboardLayout::Dvorak);
         let translations = get_translations("ia", &map);
 

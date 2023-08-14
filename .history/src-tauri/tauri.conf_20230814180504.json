@@ -32,7 +32,7 @@
         "renameFile": false,
         "scope": [
           "$APPDATA/com.onehandkeyboard.dev",
-          "$RESOURCE/resources/*"
+          "$RESOURCE/*"
         ],
         "writeFile": true
       }

@@ -30,10 +30,7 @@
         "removeDir": false,
         "removeFile": false,
         "renameFile": false,
-        "scope": [
-          "$APPDATA/com.onehandkeyboard.dev",
-          "$RESOURCE/resources/*"
-        ],
+        "scope": ["$APPDATA/com.onehandkeyboard.dev"],
         "writeFile": true
       }
     },
@@ -49,7 +46,7 @@
         "icons/icon.ico"
       ],
       "resources": [
-        "resources/*"
+        "/assets/words.txt"
       ]
     },
     "security": {

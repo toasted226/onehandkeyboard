@@ -18,7 +18,9 @@ function App() {
         let progress = invoke("new_dictionary");
         progress.then(() => {
           setLoaded(true);
-        }).catch((e) => setError("ERROR: " + e as string));
+        }).catch((s) => {
+          setError(s as string);
+        });
       });
     });
   }
@@ -49,7 +51,6 @@ function App() {
       {loaded || firstTimeSetup ? (<Textbox />) : (
         <div className="loading">
           <p>Loading dictionary...</p>
-          <p>{error}</p>
         </div>
       )}
     </div>

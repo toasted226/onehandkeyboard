@@ -8,7 +8,7 @@ pub enum KeyboardLayout {
     #[default]Qwerty,
 }
 
-const FILE_PATH: &str = "resources/words.txt";
+const FILE_PATH: &str = "assets/words.txt";
 
 // Reads and filters all the words in the words file
 pub fn read_words() -> Result<Vec<String>, std::io::Error> {

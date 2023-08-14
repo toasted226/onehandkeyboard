@@ -19,7 +19,7 @@ function App() {
         progress.then(() => {
           setLoaded(true);
         }).catch((e) => setError("ERROR: " + e as string));
-      });
+      }).catch((e) => setError("ERROR: " + e as string));
     });
   }
 

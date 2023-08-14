@@ -32,7 +32,7 @@
         "renameFile": false,
         "scope": [
           "$APPDATA/com.onehandkeyboard.dev",
-          "$RESOURCE/resources/*"
+          "$RESOURCE/*"
         ],
         "writeFile": true
       }
@@ -49,6 +49,7 @@
         "icons/icon.ico"
       ],
       "resources": [
+        "$RESOURCE/resources/words.txt",
         "resources/*"
       ]
     },

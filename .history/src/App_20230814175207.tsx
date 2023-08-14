@@ -18,9 +18,9 @@ function App() {
         let progress = invoke("new_dictionary");
         progress.then(() => {
           setLoaded(true);
-        }).catch((e) => setError("ERROR: " + e as string));
-      });
-    });
+        }).catch((e) => setError("ERROR: "e as string));
+      }).catch((e) => setError(e as string));
+    }).catch((e) => setError(e as string));
   }
 
   const handleChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {

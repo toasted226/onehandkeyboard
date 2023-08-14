@@ -7,7 +7,6 @@ function App() {
   const [loaded, setLoaded] = useState(false);
   const [firstTimeSetup, setFirstTimeSetup] = useState(false);
   const [selected, setSelected] = useState(0);
-  const [error, setError] = useState("");
 
   if (!loaded) {
     let first_launch = invoke("first_time_startup");
@@ -18,7 +17,9 @@ function App() {
         let progress = invoke("new_dictionary");
         progress.then(() => {
           setLoaded(true);
-        }).catch((e) => setError("ERROR: " + e as string));
+        }).catch((s) => {
+          
+        });
       });
     });
   }
@@ -49,7 +50,6 @@ function App() {
       {loaded || firstTimeSetup ? (<Textbox />) : (
         <div className="loading">
           <p>Loading dictionary...</p>
-          <p>{error}</p>
         </div>
       )}
     </div>

@@ -84,8 +84,6 @@ async fn new_dictionary(state: tauri::State<'_, ConfigState>) -> Result<(), Stri
             let layout = state.0.lock().unwrap().layout.clone();
             state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout));
             state.0.lock().unwrap().setup = true;
-        } else {
-            return Err(String::from("Failed to read words"));
         }
     }
     Ok(())
