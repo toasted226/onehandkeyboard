@@ -97,25 +97,6 @@ pub fn to_onehand_char(c: &char, layout: &KeyboardLayout, hand: &Hand) -> char {
                 'n' => 'b',
                 c => *c,
             }
-        } else {
-            match c {
-                'f' => 'j',
-                'd' => 'k',
-                's' => 'l',
-                'a' => ';',
-                'r' => 'u',
-                'e' => 'i',
-                'w' => 'o',
-                'q' => 'p',
-                'v' => 'm',
-                'c' => ',',
-                'x' => '.',
-                'z' => '/',
-                't' => 'y',
-                'g' => 'h',
-                'b' => 'n',
-                c => *c,
-            }
         }
     }
 }
@@ -233,6 +214,7 @@ pub fn get_symbol(letter: &char, layout: &KeyboardLayout) -> Option<char> {
         }
     }
 }
+
 
 #[cfg(test)]
 mod tests {

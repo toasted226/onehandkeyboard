@@ -6,8 +6,7 @@ import { useState } from "react";
 function App() {
   const [loaded, setLoaded] = useState(false);
   const [firstTimeSetup, setFirstTimeSetup] = useState(false);
-  const [selectedLayout, setSelectedLayout] = useState(0);
-  const [selectedHand, setSelectedHand] = useState(0);
+  const [selected, setSelected] = useState(0);
   const [error, setError] = useState("");
 
   if (!loaded) {
@@ -24,13 +23,9 @@ function App() {
     });
   }
 
-  const handleLayoutChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLayout(Number(evt.currentTarget.value));
+  const handleChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelected(Number(evt.currentTarget.value));
   };
-
-  const handleHandChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedHand(Number(evt.currentTarget.value));
-  }
 
   return (
     <div>
@@ -43,15 +38,13 @@ function App() {
               <option value={0}>Qwerty</option>
               <option value={1}>Dvorak</option>
             </select>
-            <br></br>
-            <p>Which hand would you like to type with?</p>
-            <select onChange={handleHandChange}>
-              <option value={0}>Left Hand</option>
-              <option value={1}>Right Hand</option>
+            <select onChange={handleChange}>
+              <option value={0}>Qwerty</option>
+              <option value={1}>Dvorak</option>
             </select>
             <br></br>
             <button onClick={() => {
-              invoke("set_layout", { layoutId: selectedLayout, handId: selectedHand });
+              invoke("set_layout", { layoutId: selected });
               setFirstTimeSetup(false);
             }}>Continue</button>
           </div>

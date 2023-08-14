@@ -84,8 +84,7 @@ async fn new_dictionary(state: tauri::State<'_, ConfigState>) -> Result<(), Stri
     if !state.0.lock().unwrap().setup {
         if let Ok(words) = onehandkeyboard::read_words() {
             let layout = state.0.lock().unwrap().layout.clone();
-            let hand = state.0.lock().unwrap().hand.clone();
-            state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout, &hand));
+            state.0.lock().unwrap().map = Some(onehandkeyboard::create_hashmap(&words, &layout));
             state.0.lock().unwrap().setup = true;
         } else {
             return Err(String::from("Failed to read words"));
@@ -108,7 +107,6 @@ async fn config_setup(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigSta
                 Ok(s) => s
             };
             state.0.lock().unwrap().layout = conf.layout;
-            state.0.lock().unwrap().hand = conf.hand;
         },
         Err(e) => return Err(String::from("Error: ".to_owned() + &e.to_string())),
     }
@@ -132,7 +130,6 @@ async fn set_layout(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigState
     };
 
     state.0.lock().unwrap().layout = layout.clone().unwrap();
-    state.0.lock().unwrap().hand = hand.clone().unwrap();
 
     let mut filepath = app.path_resolver().app_config_dir().unwrap();
     let dir = filepath.clone();
@@ -143,7 +140,7 @@ async fn set_layout(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigState
         setup: false,
         map: state.0.lock().unwrap().map.clone(),
         layout: layout.unwrap(),
-        hand: hand.unwrap(),
+        hand: 
     };
 
     let json = serde_json::to_string(&config);

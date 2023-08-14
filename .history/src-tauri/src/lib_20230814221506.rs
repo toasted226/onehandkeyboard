@@ -37,85 +37,43 @@ pub fn read_words() -> Result<Vec<String>, std::io::Error> {
 // Converts char to its onehand equivalent
 pub fn to_onehand_char(c: &char, layout: &KeyboardLayout, hand: &Hand) -> char {
     if *layout == KeyboardLayout::Dvorak {
-        if *hand == Hand::LeftHand {
-            match c {
-                'h' => 'u',
-                't' => 'e',
-                'n' => 'o',
-                's' => 'a',
-                'g' => 'p',
-                'c' => '.',
-                'r' => ',',
-                'l' => '\'',
-                'm' => 'k',
-                'w' => 'j',
-                'v' => 'q',
-                'z' => ';',
-                'f' => 'y',
-                'd' => 'i',
-                'b' => 'x',
-                c => *c,
-            }
-        } else {
-            match c {
-                'u' => 'h',
-                'e' => 't',
-                'o' => 'n',
-                'a' => 's',
-                'p' => 'g',
-                '.' => 'c',
-                ',' => 'r',
-                '\'' => 'l',
-                'k' => 'm',
-                'j' => 'w',
-                'q' => 'v',
-                ';' => 'z',
-                'y' => 'f',
-                'i' => 'd',
-                'x' => 'b',
-                c => *c,
-            }
+        match c {
+            'h' => 'u',
+            't' => 'e',
+            'n' => 'o',
+            's' => 'a',
+            'g' => 'p',
+            'c' => '.',
+            'r' => ',',
+            'l' => '\'',
+            'm' => 'k',
+            'w' => 'j',
+            'v' => 'q',
+            'z' => ';',
+            'f' => 'y',
+            'd' => 'i',
+            'b' => 'x',
+            c => *c,
         }
     }
     else {
-        if *hand == Hand::LeftHand {
-            match c {
-                'j' => 'f',
-                'k' => 'd',
-                'l' => 's',
-                ';' => 'a',
-                'u' => 'r',
-                'i' => 'e',
-                'o' => 'w',
-                'p' => 'q',
-                'm' => 'v',
-                ',' => 'c',
-                '.' => 'x',
-                '/' => 'z',
-                'y' => 't',
-                'h' => 'g',
-                'n' => 'b',
-                c => *c,
-            }
-        } else {
-            match c {
-                'f' => 'j',
-                'd' => 'k',
-                's' => 'l',
-                'a' => ';',
-                'r' => 'u',
-                'e' => 'i',
-                'w' => 'o',
-                'q' => 'p',
-                'v' => 'm',
-                'c' => ',',
-                'x' => '.',
-                'z' => '/',
-                't' => 'y',
-                'g' => 'h',
-                'b' => 'n',
-                c => *c,
-            }
+        match c {
+            'j' => 'f',
+            'k' => 'd',
+            'l' => 's',
+            ';' => 'a',
+            'u' => 'r',
+            'i' => 'e',
+            'o' => 'w',
+            'p' => 'q',
+            'm' => 'v',
+            ',' => 'c',
+            '.' => 'x',
+            '/' => 'z',
+            'y' => 't',
+            'h' => 'g',
+            'n' => 'b',
+            c => *c,
         }
     }
 }
@@ -234,6 +192,7 @@ pub fn get_symbol(letter: &char, layout: &KeyboardLayout) -> Option<char> {
     }
 }
 
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -254,7 +213,7 @@ mod tests {
     #[test]
     fn translates() {
         let words = read_words().unwrap();
-        let map = create_hashmap(&words, &KeyboardLayout::Dvorak, &Hand::LeftHand);
+        let map = create_hashmap(&words, &KeyboardLayout::Dvorak);
         let translations = get_translations("ia", &map);
 
         assert_eq!(translations, vec!["is"]);

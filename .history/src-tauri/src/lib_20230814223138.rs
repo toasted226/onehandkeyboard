@@ -234,6 +234,7 @@ pub fn get_symbol(letter: &char, layout: &KeyboardLayout) -> Option<char> {
     }
 }
 
+
 #[cfg(test)]
 mod tests {
     use super::*;

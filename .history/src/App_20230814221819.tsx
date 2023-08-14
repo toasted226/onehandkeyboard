@@ -43,15 +43,13 @@ function App() {
               <option value={0}>Qwerty</option>
               <option value={1}>Dvorak</option>
             </select>
-            <br></br>
-            <p>Which hand would you like to type with?</p>
             <select onChange={handleHandChange}>
-              <option value={0}>Left Hand</option>
-              <option value={1}>Right Hand</option>
+              <option value={0}>Qwerty</option>
+              <option value={1}>Dvorak</option>
             </select>
             <br></br>
             <button onClick={() => {
-              invoke("set_layout", { layoutId: selectedLayout, handId: selectedHand });
+              invoke("set_layout", { layoutId: selected });
               setFirstTimeSetup(false);
             }}>Continue</button>
           </div>

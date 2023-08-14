@@ -46,8 +46,8 @@ function App() {
             <br></br>
             <p>Which hand would you like to type with?</p>
             <select onChange={handleHandChange}>
-              <option value={0}>Left Hand</option>
-              <option value={1}>Right Hand</option>
+              <option value={0}>Qwerty</option>
+              <option value={1}>Dvorak</option>
             </select>
             <br></br>
             <button onClick={() => {

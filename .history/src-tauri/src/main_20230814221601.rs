@@ -108,7 +108,6 @@ async fn config_setup(app: tauri::AppHandle<>, state: tauri::State<'_, ConfigSta
                 Ok(s) => s
             };
             state.0.lock().unwrap().layout = conf.layout;
-            state.0.lock().unwrap().hand = conf.hand;
         },
         Err(e) => return Err(String::from("Error: ".to_owned() + &e.to_string())),
     }
